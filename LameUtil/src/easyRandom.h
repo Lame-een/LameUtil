@@ -111,11 +111,11 @@ namespace lameutil
 	private:
 		void setDistributioni(std::uniform_int_distribution<int>& distrib, int min, int max)
 		{
-			distrib.param(std::uniform_int<int>::param_type(min, max));
+			distrib.param(std::uniform_int_distribution<int>::param_type(min, max));
 		}
 		void setDistributiond(std::uniform_real_distribution<double>& distrib, double min, double max)
 		{
-			distrib.param(std::uniform_real<double>::param_type(min, max));
+			distrib.param(std::uniform_real_distribution<double>::param_type(min, max));
 		}
 
 	};
