@@ -23,14 +23,15 @@ namespace lameutil
 	class BenchTimer
 	{
 	public:
-		enum TimerType : int
+		enum class TimerType
 		{
-			MICRO = 0, MILLI = 1, SEC = 2
+			MICRO, MILLI, SEC
 		};
 	private:
 		std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 		TimerType timerType = TimerType::MILLI;
 	public:
+
 		BenchTimer()
 		{
 			startTime = std::chrono::high_resolution_clock::now();

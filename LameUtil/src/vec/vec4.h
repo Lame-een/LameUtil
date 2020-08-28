@@ -2,8 +2,8 @@
 #include <cmath>
 /*
 Template vector struct.
-Operations: addition, subtraction, increment, decrement, multiplication with a scalar and division with a scalar.
-Functions: static square distance, static distance.
+Operations: addition, subtraction, increment, decrement, multiplication with a scalar and division with a scalar, insertion.
+Functions: dot product, square distance, distance, square norm, norm.
 */
 
 namespace lameutil
@@ -96,25 +96,6 @@ namespace lameutil
 
 			return *this;
 		}
-		Vec4& operator++()
-		{
-			x++;
-			y++;
-			z++;
-			w++;
-
-			return *this;
-		}
-		Vec4 operator++(int)
-		{
-			Vec4 aux = *this;
-			x++;
-			y++;
-			z++;
-			w++;
-
-			return aux;
-		}
 		Vec4& operator-=(const Vec4& in)
 		{
 			x -= in.x;
@@ -133,26 +114,6 @@ namespace lameutil
 
 			return *this;
 		}
-		Vec4& operator--()
-		{
-			x--;
-			y--;
-			z--;
-			w--;
-
-			return *this;
-		}
-		Vec4 operator--(int)
-		{
-			Vec4 aux = *this;
-			x--;
-			y--;
-			z--;
-			w--;
-
-			return aux;
-		}
-
 		Vec4 operator*(const T& in)
 		{
 			Vec4 aux = *this;
@@ -192,26 +153,43 @@ namespace lameutil
 			return *this;
 		}
 
-		static inline double sqrDistance(const Vec4& a, const Vec4& b)
+		template<typename TT>
+		friend std::ostream& operator<<(std::ostream& os, const Vec4<TT>& in)
 		{
-			return (a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y) + (a.z - b.z)*(a.z - b.z) + (a.w - b.w)*(a.w - b.w);
-		}
-		static inline double distance(const Vec4& a, const Vec4& b)
-		{
-			return sqrt(sqrDistance(a, b));
-		}
-
-		static inline double sqrNorm(const Vec4& a)
-		{
-			return (a.x*a.x) + (a.y*a.y) + (a.z + a.z) + (a.w + a.w);
-		}
-		static inline double norm(const Vec4& a)
-		{
-			return sqrt(sqrNorm(a));
+			os << "x: " << in.x << ", y: " << in.y << ", z: " << in.z << ", w: " << in.w;
+			return os;
 		}
 	};
 
 	using Vec4i = Vec4<int>;
 	using Vec4f = Vec4<float>;
 	using Vec4d = Vec4<double>;
+
+	template<typename T>
+	inline T dot(const Vec4<T>& a, const Vec4<T>& b)
+	{
+		return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+	}
+
+	template<typename T>
+	inline double sqrDistance(const Vec4<T>& a, const Vec4<T>& b)
+	{
+		return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z) + (a.w - b.w) * (a.w - b.w);
+	}
+	template<typename T>
+	inline double distance(const Vec4<T>& a, const Vec4<T>& b)
+	{
+		return sqrt(sqrDistance(a, b));
+	}
+
+	template<typename T>
+	inline double sqrNorm(const Vec4<T>& a)
+	{
+		return (a.x * a.x) + (a.y * a.y) + (a.z + a.z) + (a.w + a.w);
+	}
+	template<typename T>
+	inline double norm(const Vec4<T>& a)
+	{
+		return sqrt(sqrNorm(a));
+	}
 }

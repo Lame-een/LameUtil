@@ -2,8 +2,8 @@
 #include <cmath>
 /*
 Template vector struct.
-Operations: addition, subtraction, increment, decrement, multiplication with a scalar and division with a scalar.
-Functions: static square distance, static distance.
+Operations: addition, subtraction, increment, decrement, multiplication with a scalar and division with a scalar, insertion.
+Functions: dot product, cross product, square distance, distance, square norm, norm.
 */
 
 namespace lameutil
@@ -84,23 +84,6 @@ namespace lameutil
 
 			return *this;
 		}
-		Vec3& operator++()
-		{
-			x++;
-			y++;
-			z++;
-
-			return *this;
-		}
-		Vec3 operator++(int)
-		{
-			Vec3 aux = *this;
-			x++;
-			y++;
-			z++;
-
-			return aux;
-		}
 		Vec3& operator-=(const Vec3& in)
 		{
 			x -= in.x;
@@ -117,24 +100,6 @@ namespace lameutil
 
 			return *this;
 		}
-		Vec3& operator--()
-		{
-			x--;
-			y--;
-			z--;
-
-			return *this;
-		}
-		Vec3 operator--(int)
-		{
-			Vec3 aux = *this;
-			x--;
-			y--;
-			z--;
-
-			return aux;
-		}
-
 		Vec3 operator*(const T& in)
 		{
 			Vec3 aux = *this;
@@ -170,26 +135,54 @@ namespace lameutil
 			return *this;
 		}
 
-		static inline double sqrDistance(const Vec3& a, const Vec3& b)
-		{
-			return (a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y) + (a.z - b.z)*(a.z - b.z);
-		}
-		static inline double distance(const Vec3& a, const Vec3& b)
-		{
-			return sqrt(sqrDistance(a, b));
-		}
 
-		static inline double sqrNorm(const Vec3& a)
+		template<typename TT>
+		friend std::ostream& operator<<(std::ostream& os, const Vec3<TT>& in)
 		{
-			return (a.x*a.x) + (a.y*a.y) + (a.z+a.z);
-		}
-		static inline double norm(const Vec3& a)
-		{
-			return sqrt(sqrNorm(a));
+			os << "x: " << in.x << ", y: " << in.y << ", z: " << in.z;
+			return os;
 		}
 	};
 
 	using Vec3i = Vec3<int>;
 	using Vec3f = Vec3<float>;
 	using Vec3d = Vec3<double>;
+
+	template<typename T>
+	inline T dot(const Vec3<T>& a, const Vec3<T>& b)
+	{
+		return a.x * b.x + a.y * b.y + a.z * b.z;
+	}
+	template<typename T>
+	inline Vec3<T> cross(const Vec3<T>& a, const Vec3<T>& b)
+	{
+
+		return {
+			a.y * b.z - a.z * b.y,
+			a.z * b.x - a.x * b.z,
+			a.x * b.y - a.y * b.x
+		};
+	}
+
+	template<typename T>
+	inline double sqrDistance(const Vec3<T>& a, const Vec3<T>& b)
+	{
+		return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
+	}
+	template<typename T>
+	inline double distance(const Vec3<T>& a, const Vec3<T>& b)
+	{
+		return sqrt(sqrDistance(a, b));
+	}
+
+	template<typename T>
+	inline double sqrNorm(const Vec3<T>& a)
+	{
+		return (a.x * a.x) + (a.y * a.y) + (a.z + a.z);
+	}
+	template<typename T>
+	inline double norm(const Vec3<T>& a)
+	{
+		return sqrt(sqrNorm(a));
+	}
 }
