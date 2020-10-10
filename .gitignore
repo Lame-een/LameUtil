@@ -340,3 +340,6 @@ main.cpp
 *.sln
 *.vcxproj
 *.vcxproj.*
+
+#profiler outputfiles
+*.session.json
